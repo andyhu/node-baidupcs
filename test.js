@@ -6,8 +6,8 @@ var PCS = require('./lib/pcs'),
 
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 pcs = new PCS({
-  access_token: '21.803e0b204ac5a17bf97831159f306e5d.2592000.1402464899.2772639706-1569193',
-  app_name: 'netdsk',
+  access_token: '21.813e0b204ac5a17bf97831159f306e5d.2592000.1402464899.2772639706-1569193',
+  app_name: 'test',
   upload_trunk_size: 2 * 1024
   //,proxy: 'http://127.0.0.1:8888'
 });

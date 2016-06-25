@@ -1,0 +1,93 @@
+{
+  "name": "baidupcs",
+  "version": "0.0.1",
+  "description": "Baidu PCS API",
+  "main": "lib/pcs.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "lodash": "^2.4.2",
+    "memory-fs": "^0.3.0",
+    "superagent": "^2.0.0",
+    "superagent-proxy": "^1.0.1",
+    "superagent-retry": "^0.6.0"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-espower": "^2.3.1",
+    "babel-preset-node6": "^11.0.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^2.13.1",
+    "eslint-config-airbnb-base": "^3.0.1",
+    "eslint-plugin-import": "^1.9.2",
+    "espower": "^1.3.2",
+    "micro": "^4.1.1",
+    "superagent-logger": "^1.1.0",
+    "then-sleep": "^1.0.1",
+    "tmp": "0.0.28"
+  },
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andyhu/node-baidupcs.git"
+  },
+  "keywords": [
+    "baidupcs",
+    "baidu"
+  ],
+  "author": "andyhu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andyhu/node-baidupcs/issues"
+  },
+  "homepage": "https://github.com/andyhu/node-baidupcs#readme",
+  "ava": {
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  },
+  "babel": {
+    "presets": [
+      "node6",
+      "stage-0"
+    ],
+    "plugins": [
+      "espower",
+      "add-module-exports"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "root": true,
+    "extends": "airbnb-base",
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "func-names": 1,
+      "global-require": 1,
+      "no-param-reassign": 1,
+      "no-underscore-dangle": 1,
+      "arrow-body-style": 1,
+      "no-restricted-syntax": [
+        1,
+        "ForInStatement"
+      ],
+      "no-empty": 1,
+      "guard-for-in": 1,
+      "no-unused-expressions": 1,
+      "max-len": [
+        1,
+        120
+      ]
+    }
+  }
+}

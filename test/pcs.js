@@ -1,10 +1,17 @@
 import test from 'ava';
 import PCS from '../lib/pcs';
-import tmp from 'tmp';
-import fs from 'fs';
+import { fileSync as createTmpFile } from 'tmp';
+import { readFileSync } from 'fs';
 import config from './config.json';
 
 const pcs = new PCS(config);
+
+test.before(async () => {
+  try {
+    await pcs.api.del(['testD', 'testD2']);
+  } catch (err) {}
+});
+
 test('quota', async t => {
   const result = await pcs.api.quota();
   t.is(typeof result, 'object', 'result is object');
@@ -48,9 +55,9 @@ test.serial('move', async t => {
 });
 
 test.serial('fileDownload', async t => {
-  const tmpFile = tmp.fileSync();
+  const tmpFile = createTmpFile();
   await pcs.api.fileDownload('testD/d.js', tmpFile.name);
-  t.is(fs.readFileSync(tmpFile.name, 'utf8'), fs.readFileSync('../package.json', 'utf8'));
+  t.is(readFileSync(tmpFile.name, 'utf8'), readFileSync('../package.json', 'utf8'));
   tmpFile.removeCallback();
 });
 

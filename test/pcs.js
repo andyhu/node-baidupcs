@@ -25,8 +25,8 @@ test.serial('mkdir', async t => {
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
 });
 
-test.serial('fileUpload', async t => {
-  const result = await pcs.api.fileUpload('../package.json', 'testD/u.js', 'overwrite');
+test.serial('upload', async t => {
+  const result = await pcs.api.upload('../package.json', 'testD/u.js', 'overwrite');
   t.is(typeof result, 'object', 'result is object');
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
   t.not(result.path, undefined);
@@ -54,9 +54,9 @@ test.serial('move', async t => {
   t.not(result.extra, undefined);
 });
 
-test.serial('fileDownload', async t => {
+test.serial('download', async t => {
   const tmpFile = createTmpFile();
-  await pcs.api.fileDownload('testD/d.js', tmpFile.name);
+  await pcs.api.download('testD/d.js', tmpFile.name);
   t.is(readFileSync(tmpFile.name, 'utf8'), readFileSync('../package.json', 'utf8'));
   tmpFile.removeCallback();
 });

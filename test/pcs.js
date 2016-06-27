@@ -1,11 +1,11 @@
 import test from 'ava';
-import PCS from '../lib/pcs';
+import BaiduPCS from '../lib/baidupcs';
 import { fileSync as createTmpFile } from 'tmp';
 import { readFileAsync, writeFileAsync } from 'fs-extra-promise';
 import bytes from 'bytes';
 import config from './config.json';
 
-const pcs = new PCS(config);
+const pcs = new BaiduPCS(config);
 
 test.before(async () => {
   try {
@@ -31,6 +31,21 @@ test.serial('upload', async t => {
   t.is(typeof result, 'object', 'result is object');
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
   t.not(result.path, undefined);
+});
+
+test('uploadRapid', async t => {
+  const tmpFile = createTmpFile();
+  await writeFileAsync(tmpFile.name, Array.from(Array(1024 * 257), (_, k) => k + 1).join(''));
+  try {
+    await pcs.api.upload(tmpFile.name, 'tempFile2.txt', 'overwrite');
+  } catch (err) { }
+  const result = await pcs.api.uploadRapid(tmpFile.name, 'tempFile1.txt', 'overwrite');
+  t.is(typeof result, 'object', 'result is object');
+  t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
+  t.is(result.md5, '91862f16fccd576dc537642883c6c97b');
+  try {
+    await pcs.api.remove(['tempFile1.txt', 'tempFile2.txt']);
+  } catch (err) { }
 });
 
 test('uploadSmart', async t => {

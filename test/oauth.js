@@ -1,11 +1,11 @@
 import test from 'ava';
-import PCS from '../lib/pcs';
+import BaiduPCS from '../lib/baidupcs';
 import config from './config.json';
 
 const UID = 1107596645;
 const APP_ID = 1569193;
 
-const pcs = new PCS(config);
+const pcs = new BaiduPCS(config);
 test('getLoggedInUser', async t => {
   const result = await pcs.api.getLoggedInUser();
   t.is(typeof result, 'object', 'result is object');

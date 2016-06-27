@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import test from 'ava';
 import BaiduPCS from '../lib/baidupcs';
 import { fileSync as createTmpFile } from 'tmp';
@@ -11,6 +12,17 @@ test.before(async () => {
   try {
     await [pcs.api.remove('testD1'), pcs.api.remove('testD2'), pcs.api.remove('testD')];
   } catch (err) { }
+});
+
+test('sync', async t => {
+  let result = await pcs.api.sync();
+  t.is(typeof result, 'object', 'result is object');
+  t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
+  t.is(typeof result.entries, 'object');
+  await Promise.delay(3000);
+  result = await pcs.api.sync(result.cursor);
+  t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
+  t.is(typeof result.entries, 'object');
 });
 
 test('quota', async t => {

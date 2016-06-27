@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "bluebird": "^3.4.1",
+    "bytes": "^2.4.0",
     "fs-extra-promise": "^0.4.0",
     "lodash": "^2.4.2",
     "superagent": "^2.0.0",
-    "superagent-retry": "^0.6.0"
+    "then-sleep": "^1.0.1",
+    "webworker-threads": "^0.7.5"
   },
   "devDependencies": {
     "ava": "^0.15.2",
@@ -31,7 +33,7 @@
     "tmp": "0.0.28"
   },
   "scripts": {
-    "test": "ava"
+    "test": "eslint lib test && ava"
   },
   "repository": {
     "type": "git",

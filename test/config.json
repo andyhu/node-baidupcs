@@ -1,5 +1,7 @@
 {
   "accessToken": "21.a919fa1641d0e2fd097a92bbf4b1be22.2592000.1469256611.1107596645-1569193",
   "appName": "netdsk",
-  "proxy": "http://127.0.0.1:8888"
+  "minTrunkSize": 5000000,
+  "proxy": "http://127.0.0.1:8888",
+  "debug": true
 }

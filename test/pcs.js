@@ -1,15 +1,16 @@
 import test from 'ava';
 import PCS from '../lib/pcs';
 import { fileSync as createTmpFile } from 'tmp';
-import { readFileSync } from 'fs';
+import { readFileAsync, writeFileAsync } from 'fs-extra-promise';
+import bytes from 'bytes';
 import config from './config.json';
 
 const pcs = new PCS(config);
 
 test.before(async () => {
   try {
-    await pcs.api.del(['testD', 'testD2']);
-  } catch (err) {}
+    await [pcs.api.remove('testD1'), pcs.api.remove('testD2'), pcs.api.remove('testD')];
+  } catch (err) { }
 });
 
 test('quota', async t => {
@@ -30,6 +31,22 @@ test.serial('upload', async t => {
   t.is(typeof result, 'object', 'result is object');
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
   t.not(result.path, undefined);
+});
+
+test('uploadSmart', async t => {
+  const tmpFile = createTmpFile();
+  const minTrunkSize = pcs.options.minTrunkSize;
+  await writeFileAsync(tmpFile.name, Array.from(Array(1024 * 10), (_, k) => k + 1).join(''));
+  pcs.options.minTrunkSize = bytes('20KB');
+  const result = await pcs.api.uploadSmart(tmpFile.name, 'tempFile.txt', 'overwrite');
+  pcs.options.minTrunkSize = minTrunkSize;
+  t.is(typeof result, 'object', 'result is object');
+  t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
+  t.is(result.size, 40094);
+  tmpFile.removeCallback();
+  try {
+    await pcs.api.remove('tempFile.txt');
+  } catch (err) { }
 });
 
 test.serial('copy', async t => {
@@ -57,7 +74,7 @@ test.serial('move', async t => {
 test.serial('download', async t => {
   const tmpFile = createTmpFile();
   await pcs.api.download('testD/d.js', tmpFile.name);
-  t.is(readFileSync(tmpFile.name, 'utf8'), readFileSync('../package.json', 'utf8'));
+  t.is(await readFileAsync(tmpFile.name, 'utf8'), await readFileAsync('../package.json', 'utf8'));
   tmpFile.removeCallback();
 });
 
@@ -79,11 +96,11 @@ test.serial('list', async t => {
   t.true(result.list instanceof Array);
 });
 
-test.serial('del', async t => {
-  let result = await pcs.api.del(['testD/u.js', 'testD/d.js', 'testD']);
+test.serial('remove', async t => {
+  let result = await pcs.api.remove(['testD/u.js', 'testD/d.js', 'testD']);
   t.is(typeof result, 'object', 'result is object');
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
-  result = await pcs.api.del('testD1');
+  result = await pcs.api.remove('testD1');
   t.is(typeof result, 'object', 'result is object');
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
 });

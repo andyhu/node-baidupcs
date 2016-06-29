@@ -71,6 +71,8 @@ test('uploadSmart', async t => {
   t.is(typeof result.error_code, 'undefined', 'there\'s no errors');
   t.is(result.size, 40094);
   tmpFile.removeCallback();
+  const res = await pcs.api.uploadSmart('D:\\2015-09-24-raspbian-jessie.img', '2015-09-24-raspbian-jessie.img', 'overwrite');
+  console.log(res);
   try {
     await pcs.api.remove('tempFile.txt');
   } catch (err) { }
